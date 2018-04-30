@@ -1,0 +1,21 @@
+body
+{
+  margin-left: 55%;
+  background-image: url("img/fondoWeb4.jpg");
+  background-size: 100%;
+  font-family:  cursive;
+  text-align: center;
+
+}
+
+#recuadro
+{
+  background-color: white;
+  border: 15px solid;
+  border-radius: 80px;
+  border-color: rgb(30,255,30);
+  padding-bottom: 10%;
+  padding-top: 3%;
+  margin-top:5%;
+  margin-right: 5%;
+}

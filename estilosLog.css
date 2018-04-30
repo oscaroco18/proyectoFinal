@@ -1,0 +1,27 @@
+body
+{
+  max-width: 80%;
+  margin-right: auto;
+  margin-left: auto;
+  background-image: url("img/fondoWeb4.jpg");
+  background-size: 100%;
+  font-family:  cursive;
+  text-align: center;
+
+}
+
+#recuadroLog
+{
+  background-color: white;
+  border-radius: 30px;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+
+
+#tablaPedidos {
+    padding-left: 35%;
+    padding-right: 35%;
+}

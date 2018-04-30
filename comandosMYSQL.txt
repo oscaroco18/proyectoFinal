@@ -1,0 +1,149 @@
+/////////////////// PARA COMPILAR LOS SERVLETS, ESTANDO EN src/proyectoFinal
+
+mysql -h mysql.lab.it.uc3m.es -u 18_comweb_20 -p -D  18_comweb_20d
+
+
+javac -cp /home/oscar/apache-tomcat-8.0.47/lib/servlet-api.jar:. -d ../../classes *.java
+
+javac -cp /home/gonzalo/WEB/PROYECTO/apache-tomcat-8.0.47/lib/servlet-api.jar:. -d ../../classes *.java
+
+javac -cp /usr/lab/alum/0315556/Escritorio/WEB/Practica7/apache-tomcat-8.0.47/lib/servlet-api.jar:. -d ../../classes *.java
+
+////////////////////////////////DECLARACIÓN DE TABLAS////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+CREATE TABLE Localidades(id INT NOT NULL auto_increment, nombre VARCHAR(30) NOT NULL, PRIMARY KEY(id));
+
+CREATE TABLE Especialidades(id INT NOT NULL auto_increment, nombre VARCHAR(30) NOT NULL, PRIMARY KEY(id));
+
+CREATE TABLE Restaurantes (id INT NOT NULL auto_increment, nombre VARCHAR(30) NOT NULL,direccion VARCHAR(30) NOT NULL,correoElectronico VARCHAR(30) NOT NULL, localidad INT NOT NULL, telefono INT NOT NULL, especialidad INT NOT NULL, paraCeliacos BOOL NOT NULL, foto VARCHAR(50) NOT NULL, maps VARCHAR(500) NOT NULL, PRIMARY KEY(id), CONSTRAINT FOREIGN KEY (localidad) REFERENCES Localidades(id), CONSTRAINT FOREIGN KEY(especialidad) REFERENCES Especialidades(id) );
+
+CREATE TABLE Platos (id INT NOT NULL auto_increment, nombre VARCHAR(50) NOT NULL, restaurante INT, precio DECIMAL(5,2) NOT NULL,CONSTRAINT FOREIGN KEY(restaurante) REFERENCES Restaurantes(id), PRIMARY KEY(id));
+
+CREATE TABLE Usuarios(id INT NOT NULL auto_increment, usuario VARCHAR(20) NOT NULL, contrasena VARCHAR (20) NOT NULL, nombre VARCHAR (20)NOT NULL, apellidos VARCHAR (30) NOT NULL, direccion VARCHAR (30) NOT NULL, localidad INT NOT NULL, telefono INT NOT NULL, correoElectronico VARCHAR(30) NOT NULL, gestorDe INT, CONSTRAINT FOREIGN KEY (gestorDe) REFERENCES Restaurantes(id), CONSTRAINT FOREIGN KEY (localidad) REFERENCES Localidades(id),PRIMARY KEY (id));
+
+CREATE TABLE Pedidos(id INT NOT NULL auto_increment, fecha DATETIME NOT NULL, usuario INT NOT NULL, restaurante INT NOT NULL, localidad INT NOT NULL, direccion VARCHAR(30) NOT NULL, precioTotal DECIMAL (6,2) NOT NULL, estado ENUM('encargado','en cocina','en camino','entregado'), CONSTRAINT FOREIGN KEY(usuario) REFERENCES Usuarios(id), CONSTRAINT FOREIGN KEY (restaurante) REFERENCES Restaurantes(id), CONSTRAINT FOREIGN KEY (localidad) REFERENCES Localidades(id),PRIMARY KEY (id));
+
+CREATE TABLE PlatosEnPedido (platos INT NOT NULL, pedido INT NOT NULL, CONSTRAINT FOREIGN KEY(platos) REFERENCES Platos(id), CONSTRAINT FOREIGN KEY(pedido) REFERENCES Pedidos(id));
+
+////////////////////////////////INSERTADO DE DATOS////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+INSERT INTO Localidades (nombre) VALUES ("Madrid");
+INSERT INTO Localidades (nombre) VALUES ("Leganes");
+INSERT INTO Localidades (nombre) VALUES ("Barcelona");
+INSERT INTO Localidades (nombre) VALUES ("Sevilla");
+INSERT INTO Localidades (nombre) VALUES ("Tembleque");
+INSERT INTO Localidades (nombre) VALUES ("Toledo");
+INSERT INTO Localidades (nombre) VALUES ("Soria");
+INSERT INTO Localidades (nombre) VALUES ("Getafe");
+INSERT INTO Localidades (nombre) VALUES ("Castellon");
+INSERT INTO Localidades (nombre) VALUES ("Cadiz");
+INSERT INTO Localidades (nombre) VALUES ("Fuenlabrada");
+
+INSERT INTO Especialidades (nombre) VALUES ("Chino");
+INSERT INTO Especialidades (nombre) VALUES ("Japones");
+INSERT INTO Especialidades (nombre) VALUES ("Italiano");
+INSERT INTO Especialidades (nombre) VALUES ("Vasco");
+INSERT INTO Especialidades (nombre) VALUES ("Español");
+INSERT INTO Especialidades (nombre) VALUES ("Asturiano");
+INSERT INTO Especialidades (nombre) VALUES ("Tailandes");
+INSERT INTO Especialidades (nombre) VALUES ("Turco");
+INSERT INTO Especialidades (nombre) VALUES ("Portugues");
+
+INSERT INTO Restaurantes (nombre, direccion, correoElectronico, localidad, telefono, especialidad, paraCeliacos, foto, maps) VALUES ("Paradis","C/ Marqués de Cubas","paradis@paradis.es",(SELECT id FROM Localidades WHERE nombre='Madrid'),914297303, (SELECT id FROM Especialidades WHERE nombre='Italiano'), true, 'img/paradis1.jpg', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1073.9727805680568!2d-3.696447734070621!3d40.416520845174!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd422883a474cd97%3A0x38c5576b37999ec!2sParad%C3%ADs+Madrid!5e0!3m2!1ses!2ses!4v1525076314582');
+INSERT INTO Restaurantes (nombre, direccion, correoElectronico, localidad, telefono, especialidad, paraCeliacos, foto, maps) VALUES ("Cebo","Carrera de San Jeronimo","cebo@cebo.es",(SELECT id FROM Localidades WHERE nombre='Madrid'),917877780, (SELECT id FROM Especialidades WHERE nombre='Español'), false, 'img/cebo1.jpg', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1277.1802199029005!2d-3.6995634715648937!3d40.416302327200086!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd4228816e559c69%3A0xe94d50e1a47cd9!2sCEBO!5e0!3m2!1ses!2ses!4v1525076360916');
+INSERT INTO Restaurantes (nombre, direccion, correoElectronico, localidad, telefono, especialidad, paraCeliacos, foto, maps) VALUES ("Maria Belen","C/ Av Andalucía, Km 92,300","mariata@gmail.es",(SELECT id FROM Localidades WHERE nombre='Tembleque'),925123123, (SELECT id FROM Especialidades WHERE nombre='Español'), false, 'img/mariabelen1.jpg', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3069.8135419727887!2d-3.501391684854955!3d39.69889610690618!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd69eeabd480bfdd%3A0xb838b1329e1884ef!2sRestaurante+Mar%C3%ADa+Bel%C3%A9n+SL!5e0!3m2!1ses!2ses!4v1525076450008');
+INSERT INTO Restaurantes (nombre, direccion, correoElectronico, localidad, telefono, especialidad, paraCeliacos, foto, maps) VALUES ("Naomi","C/ Avila","naomi@hotmail.com",(SELECT id FROM Localidades WHERE nombre='Barcelona'),91478654, (SELECT id FROM Especialidades WHERE nombre='Japones'), true, 'img/naomi1.jpg', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3036.0254644372026!2d-3.7028001848331495!3d40.45257336138306!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd4228ffcb0dad53%3A0xa1032366caa442ab!2sRestaurante+Japon%C3%A9s+Naom%C3%AD!5e0!3m2!1ses!2ses!4v1525082743454');
+INSERT INTO Restaurantes (nombre, direccion, correoElectronico, localidad, telefono, especialidad, paraCeliacos, foto, maps) VALUES ("A Posada","Avda. Andalucia","aposada@hotmail.com",(SELECT id FROM Localidades WHERE nombre='Tembleque'),91454654, (SELECT id FROM Especialidades WHERE nombre='Español'), true, 'img/aposada1.jpg', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d767.542858910914!2d-3.5017496707827287!3d39.6908492306983!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd69ec6eeaa56777%3A0xcce76c8f74af5147!2sHotel+A+Posada!5e0!3m2!1ses!2ses!4v1525076572264');
+INSERT INTO Restaurantes (nombre, direccion, correoElectronico, localidad, telefono, especialidad, paraCeliacos, foto, maps) VALUES ("PizzaPi","Avda. Universidad","pizzarica@hotmail.com",(SELECT id FROM Localidades WHERE nombre='Fuenlabrada'),91454454, (SELECT id FROM Especialidades WHERE nombre='Italiano'), true, 'img/pizzapi1.jpg', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2559.3317867764636!2d-3.8180393366383276!3d40.28517749890031!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd418b7848ceaf9f%3A0xc6b674bea4e892a4!2sPizza+Pi!5e0!3m2!1ses!2ses!4v1525076602328');
+INSERT INTO Restaurantes (nombre, direccion, correoElectronico, localidad, telefono, especialidad, paraCeliacos, foto, maps) VALUES ("Turkish Kebab","C/ Comunidad de Madrid","kierresunkebab@hotmail.com",(SELECT id FROM Localidades WHERE nombre='Fuenlabrada'),94454454, (SELECT id FROM Especialidades WHERE nombre='Turco'), false, 'img/turkishkebab1.jpg', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1809.902010866964!2d-3.797311686128104!3d40.27841078382985!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd418b0e2e3a68f1%3A0x9834043ec3557642!2sTurkish+Doner+Kebab!5e0!3m2!1ses!2ses!4v1525076644624');
+INSERT INTO Restaurantes (nombre, direccion, correoElectronico, localidad, telefono, especialidad, paraCeliacos, foto, maps) VALUES ("Las Ventas de Velazquez","C/Cedra","ventasVelazquez@hotmail.com",(SELECT id FROM Localidades WHERE nombre='Leganes'),91654752, (SELECT id FROM Especialidades WHERE nombre='Español'), true, 'img/lasventasdevelazquez1.jpg', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6084.222746724805!2d-3.733349434824809!3d40.31768571394173!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd4220bb36bd03d3%3A0xf0e2149e0405de5a!2sLas+Ventas+de+Diego+de+Velazquez!5e0!3m2!1ses!2ses!4v1525076705056');
+
+INSERT INTO Usuarios (usuario,contrasena,nombre,apellidos,direccion,localidad,telefono,correoElectronico,gestorDe) VALUES ("oscar","123456","Oscar","Rodriguez Corps","C/ Don Juan Jose",(SELECT id FROM Localidades WHERE nombre='Tembleque'),628123456,"oscar@gmail.com",(SELECT id FROM Restaurantes WHERE nombre='Maria Belen'));
+INSERT INTO Usuarios (usuario,contrasena,nombre,apellidos,direccion,localidad,telefono,correoElectronico,gestorDe) VALUES ("gonzalo","123456","Gonzalo","Gomez Ortega","Avda Naciones",(SELECT id FROM Localidades WHERE nombre='Fuenlabrada'),685805045,"gonzalo@hotmail.com",(SELECT id FROM Restaurantes WHERE nombre='Paradis'));
+INSERT INTO Usuarios (usuario,contrasena,nombre,apellidos,direccion,localidad,telefono,correoElectronico,gestorDe) VALUES ("hambriento46","123986","Alberto","Alonso Fernandez","C/ Teclado",(SELECT id FROM Localidades WHERE nombre='Soria'),698502047,"alberto@hotmail.com",NULL);
+
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Menú del día (a consultar)",(SELECT id FROM Restaurantes WHERE nombre='Maria Belen'), 9.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Baguette de jamón",(SELECT id FROM Restaurantes WHERE nombre='Maria Belen'), 4.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Baguette de queso",(SELECT id FROM Restaurantes WHERE nombre='Maria Belen'), 4.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Baguette de calamares",(SELECT id FROM Restaurantes WHERE nombre='Maria Belen'), 5.00);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Baguette de lomo",(SELECT id FROM Restaurantes WHERE nombre='Maria Belen'), 4.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Baguette de lomo, tomate y queso",(SELECT id FROM Restaurantes WHERE nombre='Maria Belen'), 5.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Ración de ibéricos",(SELECT id FROM Restaurantes WHERE nombre='Maria Belen'), 8.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Ración de calamares",(SELECT id FROM Restaurantes WHERE nombre='Maria Belen'), 7.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Ración de callos",(SELECT id FROM Restaurantes WHERE nombre='Maria Belen'), 7.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Hamburguesa casera",(SELECT id FROM Restaurantes WHERE nombre='Maria Belen'), 5.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Sándwich mixto",(SELECT id FROM Restaurantes WHERE nombre='Maria Belen'), 4.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Sándwich mixto con huevo",(SELECT id FROM Restaurantes WHERE nombre='Maria Belen'), 5.00);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Tosta de solomillo con queso de cabra",(SELECT id FROM Restaurantes WHERE nombre='Maria Belen'), 7.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Tosta de jamón",(SELECT id FROM Restaurantes WHERE nombre='Maria Belen'), 7.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Tosta de gulas con huevo",(SELECT id FROM Restaurantes WHERE nombre='Maria Belen'), 7.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Bola de helado Mariata",(SELECT id FROM Restaurantes WHERE nombre='Maria Belen'), 3.99);
+
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Menú del día (a consultar)",(SELECT id FROM Restaurantes WHERE nombre='Paradis'), 24.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Croquetas caseras de pringa",(SELECT id FROM Restaurantes WHERE nombre='Paradis'), 9.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Ensalada de quinoas",(SELECT id FROM Restaurantes WHERE nombre='Paradis'), 10.00);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Guisantes frescos salteados a la menta y trufa",(SELECT id FROM Restaurantes WHERE nombre='Paradis'), 12.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Arroz caldoso de bogavante",(SELECT id FROM Restaurantes WHERE nombre='Paradis'), 25.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Calamar de anzuelo a la plancha",(SELECT id FROM Restaurantes WHERE nombre='Paradis'), 18.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Costilla de ternera nacional asada",(SELECT id FROM Restaurantes WHERE nombre='Paradis'), 27.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Pizzas Variadas",(SELECT id FROM Restaurantes WHERE nombre='Paradis'), 17.90);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Pastas Variadas",(SELECT id FROM Restaurantes WHERE nombre='Paradis'), 14.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Postres italianos Paradis",(SELECT id FROM Restaurantes WHERE nombre='Paradis'), 12.99);
+
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Menú del día (a consultar)",(SELECT id FROM Restaurantes WHERE nombre='Naomi'), 24.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Ensalada de quinoas",(SELECT id FROM Restaurantes WHERE nombre='Naomi'), 15.40);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Guisantes frescos",(SELECT id FROM Restaurantes WHERE nombre='Naomi'), 12.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Gamba blanca en carpaccio",(SELECT id FROM Restaurantes WHERE nombre='Naomi'), 21.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Calamar de anzuelo a la plancha",(SELECT id FROM Restaurantes WHERE nombre='Naomi'), 18.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Erizo japones",(SELECT id FROM Restaurantes WHERE nombre='Naomi'), 27.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Wagyu Karubi",(SELECT id FROM Restaurantes WHERE nombre='Naomi'), 28.10);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Anguila asada",(SELECT id FROM Restaurantes WHERE nombre='Naomi'), 21.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Postres varios Naomi",(SELECT id FROM Restaurantes WHERE nombre='Naomi'), 15.99);
+
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Bandeja de snaks",(SELECT id FROM Restaurantes WHERE nombre='Cebo'), 25.40);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Bacalao",(SELECT id FROM Restaurantes WHERE nombre='Cebo'), 32.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Chipiron",(SELECT id FROM Restaurantes WHERE nombre='Cebo'), 32.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Caviar",(SELECT id FROM Restaurantes WHERE nombre='Cebo'), 50.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Gamba",(SELECT id FROM Restaurantes WHERE nombre='Cebo'), 42.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Cigala",(SELECT id FROM Restaurantes WHERE nombre='Cebo'), 52.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Conejo",(SELECT id FROM Restaurantes WHERE nombre='Cebo'), 32.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Menú largo",(SELECT id FROM Restaurantes WHERE nombre='Cebo'), 95.00);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Postres varios Cebo",(SELECT id FROM Restaurantes WHERE nombre='Cebo'), 20.99);
+
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Menú del día (a consultar)",(SELECT id FROM Restaurantes WHERE nombre='A Posada'), 15.40);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Gambas rebozadas",(SELECT id FROM Restaurantes WHERE nombre='A Posada'), 12.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Setas con jamon",(SELECT id FROM Restaurantes WHERE nombre='A Posada'), 9.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Tosta de Solomillo con queso de cabra",(SELECT id FROM Restaurantes WHERE nombre='A Posada'), 8.80);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Raciones variadas",(SELECT id FROM Restaurantes WHERE nombre='A Posada'), 9.90);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Paella",(SELECT id FROM Restaurantes WHERE nombre='A Posada'), 12.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Conejo de Tembleque",(SELECT id FROM Restaurantes WHERE nombre='A Posada'), 19.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Postres varios A Posada",(SELECT id FROM Restaurantes WHERE nombre='A Posada'), 4.99);
+
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Pizza pequeña",(SELECT id FROM Restaurantes WHERE nombre='PizzaPi'), 6.40);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Pizza mediana",(SELECT id FROM Restaurantes WHERE nombre='PizzaPi'), 8.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Pizza grande",(SELECT id FROM Restaurantes WHERE nombre='PizzaPi'), 9.80);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Pizza Pi",(SELECT id FROM Restaurantes WHERE nombre='PizzaPi'), 15.50);
+
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Menú del día (a consultar)",(SELECT id FROM Restaurantes WHERE nombre='Las Ventas de Velazquez'), 16.80);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Patatas Butarque",(SELECT id FROM Restaurantes WHERE nombre='Las Ventas de Velazquez'), 7.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Setas con jamon",(SELECT id FROM Restaurantes WHERE nombre='Las Ventas de Velazquez'), 9.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Bocadillos variados",(SELECT id FROM Restaurantes WHERE nombre='Las Ventas de Velazquez'), 5.80);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Raciones variadas",(SELECT id FROM Restaurantes WHERE nombre='Las Ventas de Velazquez'), 8.90);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Arroz",(SELECT id FROM Restaurantes WHERE nombre='Las Ventas de Velazquez'), 12.99);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Albondigas en salsa",(SELECT id FROM Restaurantes WHERE nombre='Las Ventas de Velazquez'), 10.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Postres de Velazquez",(SELECT id FROM Restaurantes WHERE nombre='Las Ventas de Velazquez'), 5.20);
+
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Kebab",(SELECT id FROM Restaurantes WHERE nombre='Turkish Kebab'), 3.80);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Durum",(SELECT id FROM Restaurantes WHERE nombre='Turkish Kebab'), 4.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Lahmacun",(SELECT id FROM Restaurantes WHERE nombre='Turkish Kebab'), 7.50);
+INSERT INTO Platos (nombre, restaurante, precio) VALUES ("Hamburguesas variadas",(SELECT id FROM Restaurantes WHERE nombre='Turkish Kebab'), 4.80);
+
+
+//PARA ELIMINARLO TODO
+DROP TABLE PlatosEnPedido;
+DROP TABLE Pedidos;
+DROP TABLE Usuarios;
+DROP TABLE Platos;
+DROP TABLE Restaurantes;
+DROP TABLE Localidades;
+DROP TABLE Especialidades;

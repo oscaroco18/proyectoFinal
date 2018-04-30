@@ -1,0 +1,22 @@
+body
+{
+  max-width: 1200px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  background-image: url("img/fondo.jpg");
+  background-size: 100%;
+}
+
+
+#recuadro
+{
+  margin-left: 20%;
+  margin-right: 20%;
+  margin-top: 40%;
+  background-color: rgb(200,200,200);
+  padding-top: 2%;
+  padding-bottom: 2%;
+  border-radius: 15px;
+
+}

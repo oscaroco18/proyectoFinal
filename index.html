@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Bienvenido CallEat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="estilos.css" type="text/css">
+  </head>
+
+  <body >
+    <div class="container-fluid text-center" id='recuadro' style="background-color:white">
+
+      <img src='img/logo_apaisado.jpg' alt='CallEat_logo' width="25%">
+
+      </br>
+
+      <h3>¿Ya tienes cuenta en CallEat? Inicia sesión para disfrutar!</h3>
+
+      <form action = 'iniciarSesion' method='post'>
+        <p>
+          <input type = 'text' name= 'usuario' maxlength="20" placeholder="nombre de usuario" class="form-control" required>
+          <input type = 'password' name= 'contrasena' maxlength="20" placeholder="contraseña" class="form-control" required>
+          </br>
+          <input type='submit' value='Iniciar Sesión'class="btn btn-default" >
+        </p>
+      </form>
+
+      </br>
+
+      <h3>¿Aún no tienes cuenta?</h3>
+
+      <form action = 'viewLocalidades'>
+        <input type='submit' value='Crear una cuenta' class="btn btn-default">
+      </form>
+    </div>
+
+  </body>
+
+</html>

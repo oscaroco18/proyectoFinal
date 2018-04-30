@@ -1,0 +1,11 @@
+<Context reloadable="true">
+    <Resource name="jdbc/proyectoFinal"
+              auth="Container"
+              type="javax.sql.DataSource"
+              username="osquitar"
+              password="478601aA"
+              driverClassName="com.mysql.jdbc.Driver"
+              url="jdbc:mysql://127.0.0.1/base_datos_proyecto"
+              maxActive="8"
+              maxIdle="4"/>
+</Context>

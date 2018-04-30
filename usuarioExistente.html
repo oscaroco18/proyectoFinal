@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>CallEat - Usuario existente...</title>
+    <link rel="stylesheet" href="estilosUnlog.css" type="text/css">
+  </head>
+
+  <body>
+
+    <h1>Ops... el usuario ya existe<h1>
+
+    <h3>Por favor, introduce otro nombre de usuario distinto</h3>
+    <form action = 'crearCuenta'>
+
+      <label>
+        Usuario: <input type = 'text' name= 'usuario' maxlength="20" required>
+      </label>
+
+      </br>
+
+      <label>
+        Contraseña: <input type = 'password' name= 'contrasena' maxlength="20" required>
+      </label>
+
+      </br>
+
+      <label>
+        Nombre: <input type = 'text' name= 'nombre' maxlength="20" required>
+      </label>
+
+      </br>
+
+      <label>
+        Apellidos: <input type = 'text' name= 'apellidos' maxlength="30" required>
+      </label>
+
+      </br>
+
+      <label>
+        Correo Electrónico: <input type = 'email' name= 'correoElectronico' maxlength="30" required>
+      </label>
+
+      </br>
+
+      <label>
+        Repita su correo electrónico: <input type = 'email' name= 'correoVerificado' maxlength="30" required>
+      </label>
+
+      </br>
+
+      <label>
+        Telefono: <input type = 'number' name= 'telefono' maxlength="9" min='600000000' max='999999999' required>
+      </label>
+
+      </br>
+
+      <label>
+        Direccion: <input type = 'text' name= 'direccion' maxlength="30" required>
+      </label>
+
+    </br>
+
+    <label for='localidad'>
+      Localidad:
+      <select name='localidad'>
+        <% for (Localidades localidad: listaLocalidades) {%>
+        <p><option value='<%=localidad.getId()%>'><%=localidad.getNombre()%></option></p>
+        <%}%>
+      </select>
+    </label>
+
+      </br></br>
+
+      <input type='submit' value='Registrarse'>
+    </form>
+
+    <form action = 'index.html'>
+      <input type='submit' value='Ir al inicio'>
+    </form>
+
+  </body>
+
+</html>
