@@ -27,7 +27,7 @@ public class CrearCuenta extends HttpServlet {
      * Método del servlet que responde a una petición GET.
      *
      */
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
     throws IOException, ServletException
     {
         // establece ContentType y sistema de codificación de caracteres
