@@ -36,13 +36,15 @@ public class ModificarPedido extends HttpServlet {
         // obtiene un PrintWriter para escribir la respuesta
         PrintWriter out = response.getWriter();
 
+        HttpSession session = request.getSession();
+        Usuarios usuario = (Usuarios)session.getAttribute("usuario");
+        if(usuario==null)
+        {
+          response.sendRedirect(".html");///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        }
+
         try(DBManager manager = new DBManager())
         {
-          Usuarios usuario = new Usuarios();
-
-          HttpSession session = request.getSession();
-          usuario = (Usuarios)session.getAttribute("usuario");
-
           String idPedido= (String)request.getParameter("id");
 
           manager.avanzarEstadoPedido(Integer.parseInt(request.getParameter("id")));

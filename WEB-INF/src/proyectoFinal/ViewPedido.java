@@ -36,18 +36,15 @@ public class ViewPedido extends HttpServlet {
         // obtiene un PrintWriter para escribir la respuesta
         PrintWriter out = response.getWriter();
 
-        out.print("<html>");
+        HttpSession session = request.getSession();
+        Usuarios usuario = (Usuarios)session.getAttribute("usuario");
+        if(usuario==null)
+        {
+          response.sendRedirect(".html");/////////////////////////////////////////////////////////////////////////////////////////////////////////
+        }
 
         try(DBManager manager = new DBManager())
         {
-
-            HttpSession session = request.getSession();
-            Usuarios usuario = (Usuarios)session.getAttribute("usuario");
-            if(usuario==null)
-            {
-              response.sendRedirect("inicioFallido.html");
-            }
-
             Pedidos pedido = new Pedidos();
             pedido = (Pedidos)manager.getPedido(Integer.parseInt(request.getParameter("id")));
 
@@ -59,7 +56,6 @@ public class ViewPedido extends HttpServlet {
             RequestDispatcher  rd =request.getRequestDispatcher("pedido.jsp");
             rd.forward(request , response);
 
-        out.print("</html>");
         }
         catch (SQLException|NamingException e)
         {

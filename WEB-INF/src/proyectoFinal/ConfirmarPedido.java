@@ -32,6 +32,11 @@ public class ConfirmarPedido extends HttpServlet {
       PrintWriter out = response.getWriter();
 
       HttpSession session = request.getSession();
+      Usuarios usuario = (Usuarios)session.getAttribute("usuario");
+      if(usuario==null)
+      {
+        response.sendRedirect(".html");////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      }
       List<Platos> carroPlatos = (List<Platos>)session.getAttribute("carroPlatos");
       if(carroPlatos == null){
         carroPlatos = new ArrayList<Platos>();
@@ -41,9 +46,11 @@ public class ConfirmarPedido extends HttpServlet {
       int i=0;
       try (DBManager manager = new DBManager())
       {
-        Usuarios usuario =(Usuarios)session.getAttribute("usuario");
-
         Pedidos pedido = (Pedidos)session.getAttribute("pedido");
+        if(usuario==null)
+        {
+          response.sendRedirect(".html");/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        }
 
         String direccionPedido = request.getParameter("direccionPedido");
 

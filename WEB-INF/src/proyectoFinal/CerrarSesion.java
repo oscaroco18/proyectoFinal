@@ -37,6 +37,11 @@ public class CerrarSesion extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         HttpSession session = request.getSession();
+        Usuarios usuario = (Usuarios)session.getAttribute("usuario");
+        if(usuario==null)
+        {
+          response.sendRedirect(".html");///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        }
         session.setAttribute("usuario", null);
         session.removeAttribute("usuario");
         session.invalidate();

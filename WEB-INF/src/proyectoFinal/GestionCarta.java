@@ -36,15 +36,15 @@ public class GestionCarta extends HttpServlet {
         // obtiene un PrintWriter para escribir la respuesta
         PrintWriter out = response.getWriter();
 
-        out.print("<html>");
+        HttpSession session = request.getSession();
+        Usuarios usuario = (Usuarios)session.getAttribute("usuario");
+        if(usuario==null)
+        {
+          response.sendRedirect(".html");///////////////////////////////////////////////////////////////////////////////////////////////////////
+        }
 
         try(DBManager manager = new DBManager())
         {
-          Usuarios usuario = new Usuarios();
-
-          HttpSession session = request.getSession();
-          usuario = (Usuarios)session.getAttribute("usuario");
-
           String idRestaurante = request.getParameter("idRestaurante");
 
           //////////////////////PARTE PARA BORRAR Y MODIFICAR
@@ -64,8 +64,8 @@ public class GestionCarta extends HttpServlet {
             {
               for(i = 0; i<platosABorrarModificar.length;i++)
               {
-                out.print("TENGO QUE MODIFICAR EL PLATO " + Integer.parseInt(platosABorrarModificar[i]));
-                out.print("</br>");
+                //out.print("TENGO QUE MODIFICAR EL PLATO " + Integer.parseInt(platosABorrarModificar[i]));
+                //out.print("</br>");
                 if(borrar!=null)
                 {
                     platosBorrados = (int)manager.borrarPlato(Integer.parseInt(platosABorrarModificar[i]));
@@ -103,7 +103,7 @@ public class GestionCarta extends HttpServlet {
           }
 
           response.sendRedirect("viewRestaurante?id="+idRestaurante);
-          out.print("</html>");
+          //out.print("</html>");
         }
         catch (SQLException|NamingException e)
         {

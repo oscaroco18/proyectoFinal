@@ -36,16 +36,15 @@ public class ViewCliente extends HttpServlet {
         // obtiene un PrintWriter para escribir la respuesta
         PrintWriter out = response.getWriter();
 
+        HttpSession session = request.getSession();
+        Usuarios usuario = (Usuarios)session.getAttribute("usuario");
+        if(usuario==null)
+        {
+          response.sendRedirect(".html");//////////////////////////////////////////////////////////////////////////////////////////////////////
+        }
+
         try(DBManager manager = new DBManager())
         {
-
-          HttpSession session = request.getSession();
-          Usuarios usuario = (Usuarios)session.getAttribute("usuario");
-          if(usuario==null)
-          {
-            response.sendRedirect("inicioFallido.html");
-          }
-
           request.setAttribute("usuario", usuario);
 
           //AQUI INVOCAMOS AL manager PARA QUE ME DE LOS RESTAURANTES EN UNA CIUDAD POR PARAMETRO (LA DEL USUARIO)
@@ -66,7 +65,6 @@ public class ViewCliente extends HttpServlet {
           List<Especialidades> listaEspecialidades = new ArrayList<Especialidades>();
           listaEspecialidades = manager.getEspecialidades();
           request.setAttribute("listaEspecialidades", listaEspecialidades);
-
 
           RequestDispatcher  rd =request.getRequestDispatcher("cliente.jsp");
           rd.forward(request , response);

@@ -33,10 +33,13 @@ public class AddToCart extends HttpServlet {
       PrintWriter out = response.getWriter() ;
 
       HttpSession session = request.getSession();
-      List<Platos> carroPlatos = new ArrayList<Platos>();
+      Usuarios usuario = (Usuarios)session.getAttribute("usuario");
+      if(usuario==null)
+      {
+        response.sendRedirect(".html");//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      }
 
-      Usuarios usuario = new Usuarios();
-      usuario = (Usuarios)session.getAttribute("usuario");
+      List<Platos> carroPlatos = new ArrayList<Platos>();
 
       String idRestaurante = request.getParameter("idRestaurante");
 

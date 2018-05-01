@@ -36,23 +36,25 @@ public class ViewCarrito extends HttpServlet {
       // obtiene un PrintWriter para escribir la respuesta
       PrintWriter out = response.getWriter();
 
-        HttpSession session = request.getSession();
+      HttpSession session = request.getSession();
+      Usuarios usuario = (Usuarios)session.getAttribute("usuario");
+      if(usuario==null)
+      {
+        response.sendRedirect(".html");/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      }
 
-        Usuarios usuario = new Usuarios();
-        usuario = (Usuarios)session.getAttribute("usuario");
+      request.setAttribute("usuario",usuario);
 
-        request.setAttribute("usuario",usuario);
+      Pedidos pedido = (Pedidos)session.getAttribute("pedido");
+      if(pedido == null){
+        pedido = new Pedidos();
+        session.setAttribute("pedido",pedido);
+      }
 
-        Pedidos pedido = (Pedidos)session.getAttribute("pedido");
-        if(pedido == null){
-          pedido = new Pedidos();
-          session.setAttribute("pedido",pedido);
-        }
+      request.setAttribute("pedido",pedido);
 
-        request.setAttribute("pedido",pedido);
-
-        RequestDispatcher rd = request.getRequestDispatcher("carritoPlatos.jsp");
-        rd.forward (request ,response);
+      RequestDispatcher rd = request.getRequestDispatcher("carritoPlatos.jsp");
+      rd.forward (request ,response);
 
     }
 }

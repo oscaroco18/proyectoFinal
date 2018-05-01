@@ -36,15 +36,15 @@ public class ViewModificarCarta extends HttpServlet {
         // obtiene un PrintWriter para escribir la respuesta
         PrintWriter out = response.getWriter();
 
+        HttpSession session = request.getSession();
+        Usuarios usuario = (Usuarios)session.getAttribute("usuario");
+        if(usuario==null)
+        {
+          response.sendRedirect(".html");////////////////////////////////////////////////////////////////////////////////////////////
+        }
+
         try(DBManager manager = new DBManager())
         {
-          HttpSession session = request.getSession();
-          Usuarios usuario = (Usuarios)session.getAttribute("usuario");
-          if(usuario==null)
-          {
-            response.sendRedirect("inicioFallido.html");
-          }
-
           Restaurantes restaurante = new Restaurantes();
 
           restaurante = (Restaurantes)manager.getRestaurante(Integer.parseInt(request.getParameter("id")));
