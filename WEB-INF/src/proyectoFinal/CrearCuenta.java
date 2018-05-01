@@ -27,7 +27,7 @@ public class CrearCuenta extends HttpServlet {
      * Método del servlet que responde a una petición GET.
      *
      */
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
     throws IOException, ServletException
     {
         // establece ContentType y sistema de codificación de caracteres
@@ -45,6 +45,7 @@ public class CrearCuenta extends HttpServlet {
 
           if(nombreUsuarioExistente == true)//El usuario ya existe
           {
+
             RequestDispatcher  rd =request.getRequestDispatcher("usuarioExistente.html");
             rd.forward(request , response);
           }
