@@ -30,27 +30,32 @@ public class CrearCuenta extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
     throws IOException, ServletException
     {
+
+
         // establece ContentType y sistema de codificación de caracteres
         response.setContentType("text/html; charset=UTF-8");
 
         // obtiene un PrintWriter para escribir la respuesta
         PrintWriter out = response.getWriter();
 
+        //out.print("<html>");
+
         String usuario = request.getParameter("usuario");
 
         try(DBManager manager = new DBManager())
         {
-          //Miramos disponibilidad del usuario
           Boolean nombreUsuarioExistente = manager.getDisponibilidadUsuario(usuario);
 
-          if(nombreUsuarioExistente == true)//El usuario ya existe
+          if(nombreUsuarioExistente == true)
           {
-
+            //out.print("El usuario ya existe en la base de datos. Por favor, elige otro nombre de usuario<br>");
             RequestDispatcher  rd =request.getRequestDispatcher("usuarioExistente.html");
             rd.forward(request , response);
           }
-          else//El usuario está disponible
+          else
           {
+
+            //out.print("El nombre de usuario está disponible</br></br>");
             String contrasena = request.getParameter("contrasena");
             String nombre = request.getParameter("nombre");
             String apellidos = request.getParameter("apellidos");
@@ -59,14 +64,16 @@ public class CrearCuenta extends HttpServlet {
             int telefono = Integer.parseInt(request.getParameter("telefono"));
             String correoElectronico = request.getParameter("correoElectronico");
             String gestorDe = request.getParameter("gestorDe");
+            String nombreLocalidad = request.getParameter("localidad");
+            manager.insertarUsuario(usuario, contrasena, nombre, apellidos, direccion, nombreLocalidad, telefono, correoElectronico, gestorDe);
 
-            //Insertamos el usuario en la BD
-            manager.insertarUsuario(usuario, contrasena, nombre, apellidos, direccion, localidad, telefono, correoElectronico, gestorDe);
-
-            //Iniciamos sesión con el usuaio
+            //out.print("INSERCIÓN CORRECTA DEL USUARIO " + usuario);
             response.sendRedirect("iniciarSesion?usuario="+ usuario +"&contrasena=" + contrasena);
+            //iniciarSesion?usuario=oscar&contrasena=123456
+
           }
 
+          //out.print("</html>");
         }
         catch (SQLException|NamingException e)
         {

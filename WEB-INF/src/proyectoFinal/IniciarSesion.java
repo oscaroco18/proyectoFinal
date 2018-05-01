@@ -63,4 +63,41 @@ public class IniciarSesion extends HttpServlet {
         }
 
     }
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws IOException, ServletException
+    {
+        // establece ContentType y sistema de codificación de caracteres
+        response.setContentType("text/html; charset=UTF-8");
+
+        // obtiene un PrintWriter para escribir la respuesta
+        PrintWriter out = response.getWriter();
+
+        String usuario = request.getParameter("usuario");
+        String contrasena = request.getParameter("contrasena");
+
+        try(DBManager manager = new DBManager())
+        {
+          Usuarios userEncontrado = manager.getUsuario(usuario, contrasena);
+
+          if(userEncontrado!=null)
+          {
+            HttpSession session = request.getSession();
+            session.setAttribute("usuario", userEncontrado);
+
+            response.sendRedirect("viewCliente");
+          }
+          else
+          {
+            response.sendRedirect("inicioFallido.html");
+          }
+
+        }
+        catch (SQLException|NamingException e)
+        {
+          e.printStackTrace();
+          response.sendError(500);
+        }
+
+    }
 }

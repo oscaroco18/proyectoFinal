@@ -141,7 +141,7 @@ public class DBManager implements AutoCloseable {
     public boolean getDisponibilidadUsuario(String usuario) throws SQLException
      {
 
-      String query = "SELECT * FROM Usuarios WHERE usuario = ?";
+      String query = "SELECT id FROM Usuarios WHERE usuario = ?";
 
       try (PreparedStatement  st = connection.prepareStatement(query))
       {
